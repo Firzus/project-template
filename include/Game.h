@@ -22,8 +22,6 @@ private:
 public:
 	Game();
 	~Game();
-	void Start();
-	void Stop();
 	virtual void Update(float deltaTime);
 	virtual void FixedUpdate(float deltaTime);
 	void Draw(sf::RenderWindow& window);
@@ -40,15 +38,7 @@ Game::Game()
 	isRunning = false;
 	score = 0;
 	lives = 3;
-}
 
-Game::~Game()
-{
-	
-}
-
-void Game::Start()
-{
 	isRunning = true;
 
 	scoreText.setFont(fontManager.GetFont());
@@ -58,7 +48,7 @@ void Game::Start()
 	scoreText.setString("Score : " + std::to_string(score));
 }
 
-void Game::Stop()
+Game::~Game()
 {
 	isRunning = false;
 }
@@ -67,12 +57,12 @@ void Game::Update(float deltaTime)
 {
 	//std::cout << "Update - Delta Time: " << deltaTime << " seconds\n";
 	ball.checkCollision(windowWidth, windowHeight);
-	ball.move();
 }
 
 void Game::FixedUpdate(float deltaTime)
 {
-	//std::cout << "FixedUpdate - Delta Time: " << deltaTime << " seconds\n";
+	std::cout << "FixedUpdate - Delta Time: " << deltaTime << " seconds\n";
+	ball.move();
 }
 
 void Game::Draw(sf::RenderWindow& window)
@@ -97,7 +87,7 @@ void Game::HandleEvents(sf::RenderWindow& window)
 		{
 			if (event.key.code == sf::Keyboard::Escape)
 			{
-				Stop();
+				window.close();
 			}
 		}
 	}

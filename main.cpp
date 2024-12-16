@@ -1,25 +1,19 @@
 #include <SFML/Graphics.hpp>
 
 #include "Game.h"
+#include "Window.h"
 
 int main()
 {
-    // Window
-    const int wWidth = 800;
-    const int wHeight = 600;
-    const std::string wTitle = "Breakout";
-
     // Update
 	const int fps = 60;
     const float fixedDeltaTime = 1.0f / fps;
     float timeSinceLastUpdate = 0.0f;
     sf::Clock clock;
 
-    sf::RenderWindow window(sf::VideoMode(wWidth, wHeight), wTitle, sf::Style::Titlebar | sf::Style::Close);
-    window.setFramerateLimit(fps);
-
+    // Window
+    Window window("Breakout", 800, 600, 60);
     Game game;
-    game.Start();
 
     while (window.isOpen() && game.IsRunning())
     {
@@ -33,12 +27,12 @@ int main()
         }
 
         // Events
-        game.HandleEvents(window);
+        game.HandleEvents(window.GetWindow());
 
         // Render
-        window.clear(sf::Color::White);
-        game.Draw(window);
-        window.display();
+        window.GetWindow().clear(sf::Color::White);
+        game.Draw(window.GetWindow());
+        window.GetWindow().display();
     }
 
     return 0;
