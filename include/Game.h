@@ -27,8 +27,6 @@ private:
 public:
 	Game();
 	~Game();
-	void Start();
-	void Stop();
 	virtual void Update(float deltaTime);
 	virtual void FixedUpdate(float deltaTime);
 	void Draw(sf::RenderWindow& window);
@@ -45,15 +43,7 @@ Game::Game()
 	isRunning = false;
 	score = 0;
 	lives = 3;
-}
 
-Game::~Game()
-{
-
-}
-
-void Game::Start()
-{
 	isRunning = true;
 
 	scoreText.setFont(fontManager.GetFont());
@@ -63,7 +53,7 @@ void Game::Start()
 	scoreText.setString("Score : " + std::to_string(score));
 }
 
-void Game::Stop()
+Game::~Game()
 {
 	isRunning = false;
 }
@@ -113,7 +103,7 @@ void Game::HandleEvents(sf::RenderWindow& window)
 		{
 			if (event.key.code == sf::Keyboard::Escape)
 			{
-				Stop();
+				window.close();
 			}
 			if (event.key.code == sf::Keyboard::Left)
 			{

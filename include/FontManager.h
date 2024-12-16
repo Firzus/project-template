@@ -19,10 +19,7 @@ public:
 
 FontManager::FontManager() {}
 
-FontManager::~FontManager()
-{
-	delete& font;
-}
+FontManager::~FontManager() {}
 
 void FontManager::LoadFont(const std::string& fontPath)
 {
