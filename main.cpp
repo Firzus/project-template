@@ -1,11 +1,13 @@
 #include <SFML/Graphics.hpp>
 
 #include "Game.h"
-#include "Ball.h"
 
 int main()
 {
-    Ball ball(20, 50, 50, 3, 3, sf::Color::Blue);
+    // Window
+    const int wWidth = 800;
+    const int wHeight = 600;
+    const std::string wTitle = "Breakout";
 
     // Update
 	const int fps = 60;
@@ -36,9 +38,6 @@ int main()
         // Render
         window.clear(sf::Color::White);
         game.Draw(window);
-        ball.checkCollision(&window);
-
-        ball.move();
         window.display();
     }
 

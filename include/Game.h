@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include "Ball.h"
 
 class Game
 {
@@ -7,6 +8,10 @@ private:
 	bool isRunning;
 	int score;
 	int lives;
+
+	Ball ball = Ball(20, 50, 50, -3, -3, sf::Color::Blue);
+	int windowWidth;
+	int windowHeight;
 
 public:
 	Game();
@@ -46,6 +51,8 @@ void Game::Stop()
 void Game::Update(float deltaTime)
 {
 	//std::cout << "Update - Delta Time: " << deltaTime << " seconds\n";
+	ball.checkCollision(windowWidth, windowHeight);
+	ball.move();
 }
 
 void Game::FixedUpdate(float deltaTime)
@@ -56,10 +63,14 @@ void Game::FixedUpdate(float deltaTime)
 void Game::Draw(sf::RenderWindow& window)
 {
 	//window.draw(shape);
+	window.draw(ball.getCircle());
 }
 
 void Game::HandleEvents(sf::RenderWindow& window)
 {
+	windowWidth = window.getSize().x;
+	windowHeight = window.getSize().y;
+
 	sf::Event event;
 	while (window.pollEvent(event))
 	{
