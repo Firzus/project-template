@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Ball.h" />
     <ClInclude Include="include\FontManager.h" />
   </ItemGroup>
   <ItemGroup>

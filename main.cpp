@@ -1,12 +1,14 @@
 #include <SFML/Graphics.hpp>
 
 #include "FontManager.h"
+#include "Ball.h"
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+    sf::RenderWindow window(sf::VideoMode(800, 600), "SFML works!", sf::Style::Titlebar | sf::Style::Close);
+    Ball ball(20, 50, 50, 3, 3, sf::Color::Blue);
+
+    window.setFramerateLimit(60);
 
     while (window.isOpen())
     {
@@ -17,8 +19,11 @@ int main()
                 window.close();
         }
 
+        ball.checkCollision(&window);
+
         window.clear();
-        window.draw(shape);
+        window.draw(ball.getCircle());
+        ball.move();
         window.display();
     }
 
