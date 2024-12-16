@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\FontManager.h" />
+    <ClInclude Include="include\Game.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

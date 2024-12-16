@@ -1,24 +1,43 @@
 #include <SFML/Graphics.hpp>
 
-#include "FontManager.h"
+#include "Game.h"
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+	// Window
+	const int wWidth = 800;
+	const int wHeight = 600;
+	const std::string wTitle = "Breakout";
 
-    while (window.isOpen())
+    // Update
+	const int fps = 60;
+    const float fixedDeltaTime = 1.0f / fps;
+    float timeSinceLastUpdate = 0.0f;
+    sf::Clock clock;
+
+    sf::RenderWindow window(sf::VideoMode(wWidth, wHeight), wTitle);
+    window.setFramerateLimit(fps);
+
+    Game game;
+    game.Start();
+
+    while (window.isOpen() && game.IsRunning())
     {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                window.close();
+        // Update
+        float deltaTime = clock.restart().asSeconds();
+        timeSinceLastUpdate += deltaTime;
+		game.Update(deltaTime);
+        while (timeSinceLastUpdate >= fixedDeltaTime) {
+            game.FixedUpdate(fixedDeltaTime);
+            timeSinceLastUpdate -= fixedDeltaTime;
         }
 
-        window.clear();
-        window.draw(shape);
+        // Events
+        game.HandleEvents(window);
+
+        // Render
+        window.clear(sf::Color::White);
+        game.Draw(window);
         window.display();
     }
 
