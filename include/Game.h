@@ -2,9 +2,13 @@
 #include <iostream>
 #include "Ball.h"
 
+#include <SFML/Graphics.hpp>
+#include "FontManager.h"
+
 class Game
 {
 private:
+	FontManager fontManager;
 	bool isRunning;
 	int score;
 	int lives;
@@ -12,6 +16,8 @@ private:
 	Ball ball = Ball(20, 50, 50, -3, -3, sf::Color::Blue);
 	int windowWidth;
 	int windowHeight;
+
+	sf::Text scoreText;
 
 public:
 	Game();
@@ -29,6 +35,8 @@ public:
 
 Game::Game()
 {
+	fontManager.LoadFont("resources/fonts/Roboto.ttf");
+
 	isRunning = false;
 	score = 0;
 	lives = 3;
@@ -36,11 +44,18 @@ Game::Game()
 
 Game::~Game()
 {
+	
 }
 
 void Game::Start()
 {
 	isRunning = true;
+
+	scoreText.setFont(fontManager.GetFont());
+	scoreText.setCharacterSize(24);
+	scoreText.setFillColor(sf::Color::Black);
+	scoreText.setPosition(10, 10);
+	scoreText.setString("Score : " + std::to_string(score));
 }
 
 void Game::Stop()
@@ -62,8 +77,8 @@ void Game::FixedUpdate(float deltaTime)
 
 void Game::Draw(sf::RenderWindow& window)
 {
-	//window.draw(shape);
 	window.draw(ball.getCircle());
+	window.draw(scoreText);
 }
 
 void Game::HandleEvents(sf::RenderWindow& window)
