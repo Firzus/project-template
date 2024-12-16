@@ -8,13 +8,13 @@ protected:
 	sf::CircleShape circle;
 	sf::FloatRect collider;
 	float radius = 0;
-	int positionX = 0;
-	int positionY = 0;
-	int velocityX = 0;
-	int velocityY = 0;
+	float positionX = 0;
+	float positionY = 0;
+	float velocityX = 0;
+	float velocityY = 0;
 
 public:
-	Ball(float radius, int posX, int posY, int velocityX, int velocityY, sf::Color color);
+	Ball(float radius, float posX, float posY, float velocityX, float velocityY, sf::Color color);
 	~Ball();
 
 	void move();
@@ -28,7 +28,7 @@ public:
 	;}
 };
 
-Ball::Ball(float radius, int posX, int posY, int velocityX, int velocityY, sf::Color color)
+Ball::Ball(float radius, float posX, float posY, float velocityX, float velocityY, sf::Color color)
 {
 	this->radius = radius;
 	positionX = posX;
@@ -57,24 +57,25 @@ void Ball::move()
 
 void Ball::checkCollision(int width, int height)
 {
-	// Left and right screen collisions
+	// Left collision
 	if (positionX <= 0)
 	{
 		positionX = radius;
 		velocityX = -velocityX;
 	}
+	// Right collision
 	if (positionX + radius*2 >= width)
 	{
 		positionX = width - radius*2;
 		velocityX = -velocityX;
 	}
-
-	// Up and down screen collisions
+	// Up collision
 	if (positionY <= 0)
 	{
 		positionY = radius;
 		velocityY = -velocityY;
 	}
+	// Down collision
 	if (positionY + radius * 2 >= height)
 	{
 		positionY = height - radius*2;

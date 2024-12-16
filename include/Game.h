@@ -52,12 +52,12 @@ void Game::Update(float deltaTime)
 {
 	//std::cout << "Update - Delta Time: " << deltaTime << " seconds\n";
 	ball.checkCollision(windowWidth, windowHeight);
-	ball.move();
 }
 
 void Game::FixedUpdate(float deltaTime)
 {
 	//std::cout << "FixedUpdate - Delta Time: " << deltaTime << " seconds\n";
+	ball.move();
 }
 
 void Game::Draw(sf::RenderWindow& window)
