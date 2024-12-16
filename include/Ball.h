@@ -18,7 +18,7 @@ public:
 	~Ball();
 
 	void move();
-	void checkCollision(int width, int height);
+	void checkCollision(int windowWidth, int windowHeight);
 
 	// Getters and setters
 	sf::CircleShape getCircle() const { return circle; }
@@ -55,7 +55,7 @@ void Ball::move()
 	positionY = circle.getPosition().y;
 }
 
-void Ball::checkCollision(int width, int height)
+void Ball::checkCollision(int windowWidth, int windowHeight)
 {
 	// Left collision
 	if (positionX <= 0)
@@ -64,9 +64,9 @@ void Ball::checkCollision(int width, int height)
 		velocityX = -velocityX;
 	}
 	// Right collision
-	if (positionX + radius*2 >= width)
+	if (positionX + radius*2 >= windowWidth)
 	{
-		positionX = width - radius*2;
+		positionX = windowWidth - radius*2;
 		velocityX = -velocityX;
 	}
 	// Up collision
@@ -76,9 +76,9 @@ void Ball::checkCollision(int width, int height)
 		velocityY = -velocityY;
 	}
 	// Down collision
-	if (positionY + radius * 2 >= height)
+	if (positionY + radius * 2 >= windowHeight)
 	{
-		positionY = height - radius*2;
+		positionY = windowHeight - radius*2;
 		velocityY = -velocityY;
 	}
 }

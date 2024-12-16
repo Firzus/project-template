@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include "Ball.h"
+#include "Paddle.h"
 
 #include <SFML/Graphics.hpp>
 #include "FontManager.h"
@@ -14,10 +15,14 @@ private:
 	int lives;
 
 	Ball ball = Ball(20, 50, 50, -3, -3, sf::Color::Blue);
+	Paddle paddle = Paddle(100, 30, 400, 550, 5, sf::Color::Blue);
 	int windowWidth;
 	int windowHeight;
 
 	sf::Text scoreText;
+
+	bool isLeftArrowPressed = false;
+	bool isRightArrowPressed = false;
 
 public:
 	Game();
@@ -44,7 +49,7 @@ Game::Game()
 
 Game::~Game()
 {
-	
+
 }
 
 void Game::Start()
@@ -73,11 +78,22 @@ void Game::FixedUpdate(float deltaTime)
 {
 	//std::cout << "FixedUpdate - Delta Time: " << deltaTime << " seconds\n";
 	ball.move();
+	
+	// Inputs
+	if (isLeftArrowPressed)
+	{
+		paddle.moveLeft();
+	}
+	if (isRightArrowPressed)
+	{
+		paddle.moveRight(windowWidth);
+	}
 }
 
 void Game::Draw(sf::RenderWindow& window)
 {
 	window.draw(ball.getCircle());
+	window.draw(paddle.getRectangle());
 	window.draw(scoreText);
 }
 
@@ -98,6 +114,25 @@ void Game::HandleEvents(sf::RenderWindow& window)
 			if (event.key.code == sf::Keyboard::Escape)
 			{
 				Stop();
+			}
+			if (event.key.code == sf::Keyboard::Left)
+			{
+				isLeftArrowPressed = true;
+			}
+			if (event.key.code == sf::Keyboard::Right)
+			{
+				isRightArrowPressed = true;
+			}
+		}
+		if (event.type == sf::Event::KeyReleased)
+		{
+			if (event.key.code == sf::Keyboard::Left)
+			{
+				isLeftArrowPressed = false;
+			}
+			if (event.key.code == sf::Keyboard::Right)
+			{
+				isRightArrowPressed = false;
 			}
 		}
 	}
