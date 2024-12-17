@@ -1,14 +1,16 @@
 #pragma once
-#include <iostream>
-#include "Ball.h"
 
+#include <iostream>
 #include <SFML/Graphics.hpp>
+
 #include "FontManager.h"
+#include "Ball.h"
 
 class Game
 {
 private:
 	FontManager fontManager;
+	std::map<int, Level> levels;
 	bool isRunning;
 	int score;
 	int lives;
@@ -55,6 +57,16 @@ Game::Game()
 	scoreText.setPosition(10, 10);
 	scoreText.setString("Score : " + std::to_string(score));
 
+	levels[1] = Level({
+		{0, 1}, {1, 1}, {2, 1}, {3, 1},
+		{4, 1}, {5, 1}, {6, 1}, {7, 1}
+	});
+
+	levels[2] = Level({
+		{0, 1}, {1, 1}, {2, 1}, {3, 1},
+		{4, 1}, {5, 1}, {6, 1}, {7, 1}
+	});
+
 	Brick brick = Brick(100, 30, 400, 150, sf::Color::Red);
 	bricks.push_back(brick);
 }
@@ -90,6 +102,11 @@ void Game::Draw(sf::RenderWindow& window)
 {
 	window.draw(ball.getCircle());
 	window.draw(paddle.getRectangle());
+
+	for (const auto& pair : levels[1].GetBricks()) {
+		window.draw(pair.GetRectangle());
+	}
+
 	window.draw(scoreText);
 	window.draw(bricks[0].getRectangle());
 }

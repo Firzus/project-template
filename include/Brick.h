@@ -16,7 +16,7 @@ public:
 	~Brick();
 
 	// Getters and setters
-	sf::RectangleShape getRectangle() const { return rectangle; }
+	sf::RectangleShape GetRectangle() const { return rectangle; }
 };
 
 Brick::Brick(float width, float height, float posX, float posY, sf::Color color)
@@ -33,5 +33,4 @@ Brick::Brick(float width, float height, float posX, float posY, sf::Color color)
 
 Brick::~Brick()
 {
-
 }
