@@ -20,8 +20,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Ball.h" />
+    <ClInclude Include="include\Brick.h" />
     <ClInclude Include="include\FontManager.h" />
     <ClInclude Include="include\Game.h" />
+    <ClInclude Include="include\Level.h" />
     <ClInclude Include="include\Window.h" />
   </ItemGroup>
   <ItemGroup>
