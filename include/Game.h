@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Ball.h"
 #include "Paddle.h"
+#include "Brick.h"
 
 #include <SFML/Graphics.hpp>
 #include "FontManager.h"
