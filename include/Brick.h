@@ -1,36 +1,38 @@
 #pragma once
 
-#include <iostream>
+#include "Entity.h"
 
-class Brick
+class Brick : public Entity
 {
 protected:
 	sf::RectangleShape rectangle;
-	float width = 0;
-	float height = 0;
-	float positionX = 0;
-	float positionY = 0;
 
 public:
-	Brick(float width, float height, float posX, float posY, sf::Color color);
+	Brick(int width, int height, float posX, float posY, sf::Color color);
 	~Brick();
+
+	void OnCollision(Entity* other) override;
 
 	// Getters and setters
 	sf::RectangleShape getRectangle() const { return rectangle; }
 };
 
-Brick::Brick(float width, float height, float posX, float posY, sf::Color color)
+Brick::Brick(int width, int height, float posX, float posY, sf::Color color)
 {
 	this->width = width;
 	this->height = height;
-	positionX = posX;
-	positionY = posY;
+	this->color = color;
+	this->posX = posX;
+	this->posY = posY;
 
-	rectangle = sf::RectangleShape(sf::Vector2f(width, height));
-	rectangle.setPosition(positionX, positionY);
+	rectangle = sf::RectangleShape(sf::Vector2f((float)width, (float)height));
+	rectangle.setPosition(posX, posY);
 	rectangle.setFillColor(color);
 }
 
-Brick::~Brick()
+Brick::~Brick() {}
+
+void Brick::OnCollision(Entity* other)
 {
+	// delete si collision avec la balle
 }

@@ -12,27 +12,27 @@ int main()
     sf::Clock clock;
 
     // Window
-    Window window("Breakout", 800, 600, 60);
+    Window* window = new Window("Breakout", 800, 600, 60);
     Game game;
 
-    while (window.isOpen() && game.IsRunning())
+    while (window->isOpen() && game.IsRunning())
     {
         // Events
-        game.HandleEvents(window.GetWindow());
+        game.HandleEvents(window);
 
         // Update
         float deltaTime = clock.restart().asSeconds();
         timeSinceLastUpdate += deltaTime;
-		game.Update(deltaTime);
+		game.Update(window, deltaTime);
         while (timeSinceLastUpdate >= fixedDeltaTime) {
-            game.FixedUpdate(fixedDeltaTime);
+            game.FixedUpdate(window);
             timeSinceLastUpdate -= fixedDeltaTime;
         }
 
         // Render
-        window.GetWindow().clear(sf::Color::White);
-        game.Draw(window.GetWindow());
-        window.GetWindow().display();
+        window->GetRenderWindow().clear(sf::Color::White);
+        game.Draw(window);
+        window->GetRenderWindow().display();
     }
 
     return 0;

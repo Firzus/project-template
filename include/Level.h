@@ -22,8 +22,9 @@ public:
 	Level& operator=(const Level& other);
 	~Level();
 
-	// Getters
+	// Getters and setters
 	std::vector<Brick> GetBricks() const { return bricks; }
+	void SetBricks(std::vector<Brick> newBricks) { bricks = newBricks; }
 	bool IsCompleted() const { return isCompleted; }
 };
 
@@ -33,8 +34,8 @@ Level::Level(std::map<int, int> placement)
 	{
 		for (int j = 0; j < cols; j++)
 		{
-			int x = j * (brickWidth);
-			int y = i * (brickHeight);
+			int x = j * brickWidth;
+			int y = i * brickHeight;
 			bricks.push_back(Brick(brickWidth, brickHeight, x, y, sf::Color::Red));
 		}
 	}

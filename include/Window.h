@@ -1,31 +1,45 @@
 #pragma once
 #include <string>
 
-class Window
+#include "Entity.h"
+
+class Window : public Entity
 {
 private:
-	const int width;
-	const int height;
-	const std::string title;
-	sf::RenderWindow window;
-	const int fps;
+	std::string title;
+	sf::RenderWindow renderWindow;
+	int fps;
 
 public:
 	Window(std::string title, int width, int height, int fps);
 	~Window();
 
+	void OnCollision(Entity* other) override;
+
 	// Getters
-	bool isOpen() const { return window.isOpen(); }
-	sf::RenderWindow& GetWindow() { return window; }
+	bool isOpen() const { return renderWindow.isOpen(); }
+	sf::RenderWindow& GetRenderWindow() { return renderWindow; }
+	int GetWidth() const { return width; }
+	int GetHeight() const { return height; }
 };
 
-Window::Window(std::string title, int width, int height, int fps) : title(title), width(width), height(height), fps(fps)
+Window::Window(std::string title, int width, int height, int fps)
 {
-	window.create(sf::VideoMode(width, height), title, sf::Style::Titlebar | sf::Style::Close);
-	window.setFramerateLimit(fps);
+	this->width = width;
+	this->height = height;
+	this->title = title;
+	this->fps = fps;
+
+	renderWindow.create(sf::VideoMode(width, height), title, sf::Style::Titlebar | sf::Style::Close);
+	renderWindow.setFramerateLimit(fps);
 }
 
 Window::~Window()
 {
-	window.close();
+	renderWindow.close();
+}
+
+void Window::OnCollision(Entity* other)
+{
+	// Do nothing
 }

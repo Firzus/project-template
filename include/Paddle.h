@@ -1,40 +1,36 @@
 #pragma once
 
-#include <iostream>
+#include "Entity.h"
 
-class Paddle
+class Paddle : public Entity
 {
 protected:
 	sf::RectangleShape rectangle;
-	float width = 0;
-	float height = 0;
-	float positionX = 0;
-	float positionY = 0;
-	float speed = 0;
 
 public:
-	Paddle(float width, float height, float posX, float posY, float speed, sf::Color color);
+	Paddle(int width, int height, float posX, float posY, float speed, sf::Color color);
 	~Paddle();
 
-	void moveLeft();
-	void moveRight(int windowWidth);
+	void MoveLeft();
+	void MoveRight(int windowWidth);
+	void OnCollision(Entity* other) override;
 
 	// Getters and setters
 	sf::RectangleShape getRectangle() const { return rectangle; }
-
-	void setSpeed(float newSpeed) { speed = newSpeed; }
+	void SetSpeed(float newSpeed) { speed = newSpeed; }
 };
 
-Paddle::Paddle(float width, float height, float posX, float posY, float speed, sf::Color color)
+Paddle::Paddle(int width, int height, float posX, float posY, float speed, sf::Color color)
 {
 	this->width = width;
 	this->height = height;
-	positionX = posX;
-	positionY = posY;
+	this->posX = posX;
+	this->posY = posY;
 	this->speed = speed;
+	this->color = color;
 
-	rectangle = sf::RectangleShape(sf::Vector2f(width, height));
-	rectangle.setPosition(positionX, positionY);
+	rectangle = sf::RectangleShape(sf::Vector2f((float)width, (float)height));
+	rectangle.setPosition(posX, posY);
 	rectangle.setFillColor(color);
 }
 
@@ -43,22 +39,27 @@ Paddle::~Paddle()
 
 }
 
-inline void Paddle::moveLeft()
+void Paddle::MoveLeft()
 {
-	if (positionX >= 0)
+	if (posX >= 0)
 	{
 		rectangle.move(-speed, 0);
-		positionX = rectangle.getPosition().x;
-		positionY = rectangle.getPosition().y;
+		posX = rectangle.getPosition().x;
+		posY = rectangle.getPosition().y;
 	}
 }
 
-inline void Paddle::moveRight(int windowWidth)
+void Paddle::MoveRight(int windowWidth)
 {
-	if (positionX <= windowWidth - width)
+	if (posX <= windowWidth - width)
 	{
 		rectangle.move(speed, 0);
-		positionX = rectangle.getPosition().x;
-		positionY = rectangle.getPosition().y;
+		posX = rectangle.getPosition().x;
+		posY = rectangle.getPosition().y;
 	}
+}
+
+void Paddle::OnCollision(Entity* other)
+{
+	// Do nothing
 }

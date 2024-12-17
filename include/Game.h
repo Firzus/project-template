@@ -13,15 +13,13 @@ class Game
 private:
 	FontManager fontManager;
 	std::map<int, Level> levels;
+	int currentLevel;
 	bool isRunning;
 	int score;
 	int lives;
 
-	Ball ball = Ball(20, 400, 300, 5, 5, sf::Color::Blue);
-	Paddle paddle = Paddle(100, 30, 400, 550, 5, sf::Color::Blue);
-
-	int windowWidth;
-	int windowHeight;
+	Ball* ball = nullptr;
+	Paddle* paddle = nullptr;
 
 	sf::Text scoreText;
 
@@ -31,10 +29,10 @@ private:
 public:
 	Game();
 	~Game();
-	virtual void Update(float deltaTime);
-	virtual void FixedUpdate(float deltaTime);
-	void Draw(sf::RenderWindow& window);
-	void HandleEvents(sf::RenderWindow& window);
+	virtual void Update(Window* window, float deltaTime);
+	virtual void FixedUpdate(Window* window);
+	void Draw(Window* window);
+	void HandleEvents(Window* window);
 
 	// Getters
 	bool IsRunning() const { return isRunning; }
@@ -44,9 +42,9 @@ Game::Game()
 {
 	fontManager.LoadFont("resources/fonts/Roboto.ttf");
 
-	isRunning = false;
 	score = 0;
 	lives = 3;
+	currentLevel = 1;
 
 	isRunning = true;
 
@@ -55,6 +53,9 @@ Game::Game()
 	scoreText.setFillColor(sf::Color::Black);
 	scoreText.setPosition(10, 10);
 	scoreText.setString("Score : " + std::to_string(score));
+
+	paddle = new Paddle(200, 30, 400, 550, 5, sf::Color::Blue);
+	ball = new Ball(20, 400, 300, 5, 5, sf::Color::Blue);
 
 	levels[1] = Level({
 		{0, 1}, {1, 1}, {2, 1}, {3, 1},
@@ -72,55 +73,58 @@ Game::~Game()
 	isRunning = false;
 }
 
-void Game::Update(float deltaTime)
+void Game::Update(Window* window, float deltaTime)
 {
-	//std::cout << "Update - Delta Time: " << deltaTime << " seconds\n";
-	ball.checkCollision(windowWidth, windowHeight, paddle, levels[1].GetBricks());
+	ball->OnCollision(window);
+	ball->OnCollision(paddle);
+    for(auto & brick : levels[currentLevel].GetBricks())
+    {
+		ball->OnCollision(&brick);
+    }
+
+	// check si level est complete
 }
 
-void Game::FixedUpdate(float deltaTime)
+void Game::FixedUpdate(Window* window)
 {
 	//std::cout << "FixedUpdate - Delta Time: " << deltaTime << " seconds\n";
-	ball.move();
+	ball->Move();
 	
 	// Inputs
 	if (isLeftArrowPressed)
 	{
-		paddle.moveLeft();
+		paddle->MoveLeft();
 	}
 	if (isRightArrowPressed)
 	{
-		paddle.moveRight(windowWidth);
+		paddle->MoveRight(window->GetWidth());
 	}
 }
 
-void Game::Draw(sf::RenderWindow& window)
+void Game::Draw(Window* window)
 {
 	for (const auto& pair : levels[1].GetBricks()) {
-		window.draw(pair.getRectangle());
+		window->GetRenderWindow().draw(pair.getRectangle());
 	}
-	window.draw(ball.getCircle());
-	window.draw(paddle.getRectangle());
-	window.draw(scoreText);
+	window->GetRenderWindow().draw(ball->getCircle());
+	window->GetRenderWindow().draw(paddle->getRectangle());
+	window->GetRenderWindow().draw(scoreText);
 }
 
-void Game::HandleEvents(sf::RenderWindow& window)
+void Game::HandleEvents(Window* window)
 {
-	windowWidth = window.getSize().x;
-	windowHeight = window.getSize().y;
-
 	sf::Event event;
-	while (window.pollEvent(event))
+	while (window->GetRenderWindow().pollEvent(event))
 	{
 		if (event.type == sf::Event::Closed)
 		{
-			window.close();
+			window->GetRenderWindow().close();
 		}
 		if (event.type == sf::Event::KeyPressed)
 		{
 			if (event.key.code == sf::Keyboard::Escape)
 			{
-				window.close();
+				window->GetRenderWindow().close();
 			}
 			if (event.key.code == sf::Keyboard::Space)
 			{
