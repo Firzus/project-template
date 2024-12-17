@@ -17,6 +17,9 @@ int main()
 
     while (window.isOpen() && game.IsRunning())
     {
+        // Events
+        game.HandleEvents(window.GetWindow());
+
         // Update
         float deltaTime = clock.restart().asSeconds();
         timeSinceLastUpdate += deltaTime;
@@ -25,9 +28,6 @@ int main()
             game.FixedUpdate(fixedDeltaTime);
             timeSinceLastUpdate -= fixedDeltaTime;
         }
-
-        // Events
-        game.HandleEvents(window.GetWindow());
 
         // Render
         window.GetWindow().clear(sf::Color::White);

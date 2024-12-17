@@ -5,6 +5,8 @@
 
 #include "FontManager.h"
 #include "Ball.h"
+#include "Paddle.h"
+#include "Level.h"
 
 class Game
 {
@@ -15,9 +17,8 @@ private:
 	int score;
 	int lives;
 
-	Ball ball = Ball(20, 50, 50, -5, -5, sf::Color::Blue);
+	Ball ball = Ball(20, 400, 300, 5, 5, sf::Color::Blue);
 	Paddle paddle = Paddle(100, 30, 400, 550, 5, sf::Color::Blue);
-	std::vector<Brick> bricks;
 
 	int windowWidth;
 	int windowHeight;
@@ -46,8 +47,6 @@ Game::Game()
 	isRunning = false;
 	score = 0;
 	lives = 3;
-	windowWidth = 0;
-	windowHeight = 0;
 
 	isRunning = true;
 
@@ -66,9 +65,6 @@ Game::Game()
 		{0, 1}, {1, 1}, {2, 1}, {3, 1},
 		{4, 1}, {5, 1}, {6, 1}, {7, 1}
 	});
-
-	Brick brick = Brick(100, 30, 400, 150, sf::Color::Red);
-	bricks.push_back(brick);
 }
 
 Game::~Game()
@@ -79,7 +75,7 @@ Game::~Game()
 void Game::Update(float deltaTime)
 {
 	//std::cout << "Update - Delta Time: " << deltaTime << " seconds\n";
-	ball.checkCollision(windowWidth, windowHeight, paddle, bricks);
+	ball.checkCollision(windowWidth, windowHeight, paddle, levels[1].GetBricks());
 }
 
 void Game::FixedUpdate(float deltaTime)
@@ -104,11 +100,10 @@ void Game::Draw(sf::RenderWindow& window)
 	window.draw(paddle.getRectangle());
 
 	for (const auto& pair : levels[1].GetBricks()) {
-		window.draw(pair.GetRectangle());
+		window.draw(pair.getRectangle());
 	}
 
 	window.draw(scoreText);
-	window.draw(bricks[0].getRectangle());
 }
 
 void Game::HandleEvents(sf::RenderWindow& window)

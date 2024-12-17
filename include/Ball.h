@@ -9,8 +9,6 @@ class Ball
 protected:
 	sf::CircleShape circle;
 	float radius = 0;
-	float positionX = 0;
-	float positionY = 0;
 	float velocityX = 0;
 	float velocityY = 0;
 
@@ -33,13 +31,11 @@ public:
 Ball::Ball(float radius, float posX, float posY, float velocityX, float velocityY, sf::Color color)
 {
 	this->radius = radius;
-	positionX = posX;
-	positionY = posY;
 	this->velocityX = velocityX;
 	this->velocityY = velocityY;
 
 	circle = sf::CircleShape(this->radius);
-	circle.setPosition(positionX, positionY);
+	circle.setPosition(posX, posY);
 	circle.setFillColor(color);
 }
 
@@ -51,8 +47,6 @@ Ball::~Ball()
 void Ball::move()
 {
 	circle.move(velocityX, velocityY);
-	positionX = circle.getPosition().x;
-	positionY = circle.getPosition().y;
 }
 
 void Ball::checkCollision(int windowWidth, int windowHeight, Paddle paddle, std::vector<Brick> bricks)
@@ -84,7 +78,6 @@ void Ball::checkCollision(int windowWidth, int windowHeight, Paddle paddle, std:
 		}
 	}
 
-	
 	for (int i = 0; i < bricks.size(); i++)
 	{
 		if (circle.getGlobalBounds().intersects(bricks[i].getRectangle().getGlobalBounds()))
@@ -114,28 +107,27 @@ void Ball::checkCollision(int windowWidth, int windowHeight, Paddle paddle, std:
 		}
 	}
 	
-
 	// Screen collisions
 	// Left collision
-	if (positionX <= 0)
+	if (circle.getPosition().x <= 0)
 	{
 		circle.setPosition(0, circle.getPosition().y);
 		velocityX = -velocityX;
 	}
 	// Right collision
-	if (positionX + (radius * 2) >= windowWidth)
+	if (circle.getPosition().x + (radius * 2) >= windowWidth)
 	{
 		circle.setPosition(windowWidth - (radius * 2), circle.getPosition().y);
 		velocityX = -velocityX;
 	}
 	// Up collision
-	if (positionY <= 0)
+	if (circle.getPosition().y <= 0)
 	{
 		circle.setPosition(circle.getPosition().x, 0);
 		velocityY = -velocityY;
 	}
 	// Down collision
-	if (positionY + (radius * 2) >= windowHeight)
+	if (circle.getPosition().y + (radius * 2) >= windowHeight)
 	{
 		circle.setPosition(circle.getPosition().x, windowHeight - (radius * 2));
 		velocityY = -velocityY;
@@ -145,10 +137,10 @@ void Ball::checkCollision(int windowWidth, int windowHeight, Paddle paddle, std:
 inline std::string Ball::checkSideOfCollision(sf::RectangleShape rect)
 {
 	// Calculates which side was the brick touched
-	float deltaLeft = std::abs(rect.getPosition().x - positionX - (radius * 2));
-	float deltaRight = std::abs(rect.getPosition().x + rect.getSize().x - positionX);
-	float deltaTop = std::abs((rect.getPosition().y - positionY) - (radius * 2));
-	float deltaBottom = std::abs(rect.getPosition().y + rect.getSize().y - positionY);
+	float deltaLeft = std::abs(rect.getPosition().x - circle.getPosition().x - (radius * 2));
+	float deltaRight = std::abs(rect.getPosition().x + rect.getSize().x - circle.getPosition().x);
+	float deltaTop = std::abs((rect.getPosition().y - circle.getPosition().y) - (radius * 2));
+	float deltaBottom = std::abs(rect.getPosition().y + rect.getSize().y - circle.getPosition().y);
 
 	if (deltaLeft < deltaTop && deltaLeft < deltaRight && deltaLeft < deltaBottom) {
 		// Left collision
