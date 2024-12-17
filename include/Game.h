@@ -1,8 +1,6 @@
 #pragma once
 #include <iostream>
 #include "Ball.h"
-#include "Paddle.h"
-#include "Brick.h"
 
 #include <SFML/Graphics.hpp>
 #include "FontManager.h"
@@ -15,8 +13,10 @@ private:
 	int score;
 	int lives;
 
-	Ball ball = Ball(20, 50, 50, -3, -3, sf::Color::Blue);
+	Ball ball = Ball(20, 50, 50, -5, -5, sf::Color::Blue);
 	Paddle paddle = Paddle(100, 30, 400, 550, 5, sf::Color::Blue);
+	std::vector<Brick> bricks;
+
 	int windowWidth;
 	int windowHeight;
 
@@ -44,6 +44,8 @@ Game::Game()
 	isRunning = false;
 	score = 0;
 	lives = 3;
+	windowWidth = 0;
+	windowHeight = 0;
 
 	isRunning = true;
 
@@ -52,6 +54,9 @@ Game::Game()
 	scoreText.setFillColor(sf::Color::Black);
 	scoreText.setPosition(10, 10);
 	scoreText.setString("Score : " + std::to_string(score));
+
+	Brick brick = Brick(100, 30, 400, 150, sf::Color::Red);
+	bricks.push_back(brick);
 }
 
 Game::~Game()
@@ -62,7 +67,7 @@ Game::~Game()
 void Game::Update(float deltaTime)
 {
 	//std::cout << "Update - Delta Time: " << deltaTime << " seconds\n";
-	ball.checkCollision(windowWidth, windowHeight);
+	ball.checkCollision(windowWidth, windowHeight, paddle, bricks);
 }
 
 void Game::FixedUpdate(float deltaTime)
@@ -86,6 +91,7 @@ void Game::Draw(sf::RenderWindow& window)
 	window.draw(ball.getCircle());
 	window.draw(paddle.getRectangle());
 	window.draw(scoreText);
+	window.draw(bricks[0].getRectangle());
 }
 
 void Game::HandleEvents(sf::RenderWindow& window)

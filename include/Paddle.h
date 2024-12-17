@@ -6,7 +6,6 @@ class Paddle
 {
 protected:
 	sf::RectangleShape rectangle;
-	sf::FloatRect collider;
 	float width = 0;
 	float height = 0;
 	float positionX = 0;
@@ -30,15 +29,13 @@ Paddle::Paddle(float width, float height, float posX, float posY, float speed, s
 {
 	this->width = width;
 	this->height = height;
-	positionX = posX - (width/2);
-	positionY = posY - (height/2);
+	positionX = posX;
+	positionY = posY;
 	this->speed = speed;
 
 	rectangle = sf::RectangleShape(sf::Vector2f(width, height));
 	rectangle.setPosition(positionX, positionY);
 	rectangle.setFillColor(color);
-
-	collider = rectangle.getGlobalBounds();
 }
 
 Paddle::~Paddle()
