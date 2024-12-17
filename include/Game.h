@@ -96,13 +96,11 @@ void Game::FixedUpdate(float deltaTime)
 
 void Game::Draw(sf::RenderWindow& window)
 {
-	window.draw(ball.getCircle());
-	window.draw(paddle.getRectangle());
-
 	for (const auto& pair : levels[1].GetBricks()) {
 		window.draw(pair.getRectangle());
 	}
-
+	window.draw(ball.getCircle());
+	window.draw(paddle.getRectangle());
 	window.draw(scoreText);
 }
 
@@ -123,6 +121,11 @@ void Game::HandleEvents(sf::RenderWindow& window)
 			if (event.key.code == sf::Keyboard::Escape)
 			{
 				window.close();
+			}
+			if (event.key.code == sf::Keyboard::Space)
+			{
+				levels[1].IsCompleted() ? std::cout << "Level 1 Complete" : std::cout << "Level 1 Incomplete";
+				levels[2].IsCompleted() ? std::cout << "Level 2 Complete" : std::cout << "Level 2 Incomplete";
 			}
 			if (event.key.code == sf::Keyboard::Left)
 			{
