@@ -9,6 +9,7 @@ class Level
 private:
 	std::vector<Brick> bricks;
 
+	bool isCompleted = false;
 	const int brickWidth = 100;
 	const int brickHeight = 40;
 	const int rows = 2;
@@ -23,6 +24,7 @@ public:
 
 	// Getters
 	std::vector<Brick> GetBricks() const { return bricks; }
+	bool IsCompleted() const { return isCompleted; }
 };
 
 Level::Level(std::map<int, int> placement)
