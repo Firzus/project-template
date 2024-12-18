@@ -72,6 +72,7 @@ void Game::Draw(Window* window)
 {
 	for (Brick brick : bricks)
 	{
+		if (brick.IsDestroyed()) continue;
 		window->GetRenderWindow().draw(brick.GetRectangle());
 	}
 	window->GetRenderWindow().draw(ball->getCircle());

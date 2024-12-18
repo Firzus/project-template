@@ -10,7 +10,7 @@ Brick::Brick(int width, int height, float posX, float posY, sf::Color color)
 	this->posX = posX;
 	this->posY = posY;
 
-	destroyed= false;
+	destroyed = false;
 
 	rectangle = sf::RectangleShape(sf::Vector2f((float)width, (float)height));
 	rectangle.setPosition(posX, posY);
