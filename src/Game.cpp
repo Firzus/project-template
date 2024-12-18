@@ -19,12 +19,27 @@ Game::Game()
 	paddle = new Paddle(175, 30, 400, 550, 5, sf::Color::Blue);
 	ball = new Ball(20, 400, 300, 6, -6, sf::Color::Blue);
 
+	//levels[1] = Level({
+	//	{{0, 0}, true}, {{1, 0}, true}, {{2, 0}, true}, {{3, 0}, true},
+	//	{{0, 1}, true}, {{1, 1}, true}, {{2, 1}, true}, {{3, 1}, true}
+	//});
+
 	levels[1] = Level({
-		{{0, 0}, true}, {{1, 0}, false}, {{2, 0}, true}, {{3, 0}, true},
+	{{0, 0}, false}, {{1, 0}, false}, {{2, 0}, false}, {{3, 0}, false},
+	{{0, 1}, false}, {{1, 1}, false}, {{2, 1}, true}, {{3, 1}, false}
+	});
+
+	levels[2] = Level({
+		{{0, 0}, true}, {{1, 0}, false}, {{2, 0}, true}, {{3, 0}, false},
+		{{0, 1}, false}, {{1, 1}, true}, {{2, 1}, false}, {{3, 1}, true}
+	});
+
+	levels[3] = Level({
+		{{0, 0}, true}, {{1, 0}, true}, {{2, 0}, true}, {{3, 0}, true},
 		{{0, 1}, true}, {{1, 1}, true}, {{2, 1}, true}, {{3, 1}, true}
 	});
 
-	BuildLevel(1);
+	BuildLevel(currentLevel);
 }
 
 Game::~Game()
@@ -53,9 +68,16 @@ void Game::Update(Window* window, float deltaTime)
 	}
 
 	// check si level est complete
-	if (levels[currentLevel].GetGrid().empty())
+	if (bricks.empty())
 	{
+		if (levels.find(currentLevel + 1) == levels.end())
+		{
+			isRunning = false;
+			return;
+		}
+
 		currentLevel++;
+		BuildLevel(currentLevel);
 	}
 
 	// If the ball go out of the screen
@@ -63,7 +85,7 @@ void Game::Update(Window* window, float deltaTime)
 	{
 		ball->Respawn();
 		paddle->Respawn();
-		BuildLevel(1);
+		BuildLevel(currentLevel);
 
 		score = 0;
 		scoreText.setString("Score : " + std::to_string(score));
@@ -135,10 +157,10 @@ void Game::HandleEvents(Window* window)
 	}
 }
 
-void Game::BuildLevel(int levelNumber)
+void Game::BuildLevel(int levelIndex)
 {
 	bricks.clear();
-	for (auto const& brick : levels[levelNumber].GetGrid())
+	for (auto const& brick : levels[levelIndex].GetGrid())
 	{
 		if (!brick.second) continue;
 		bricks.push_back(Brick(100, 30, brick.first.first * 100, brick.first.second * 30, sf::Color::Red));
