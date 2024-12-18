@@ -37,6 +37,7 @@ public:
 	virtual void FixedUpdate(Window* window);
 	void Draw(Window* window);
 	void HandleEvents(Window* window);
+	void BuildLevel(int levelNumber);
 
 	// Getters
 	bool IsRunning() const { return isRunning; }

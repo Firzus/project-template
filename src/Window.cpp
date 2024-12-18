@@ -20,3 +20,7 @@ void Window::OnCollision(Entity* other)
 {
 	// Do nothing
 }
+
+void Window::Respawn()
+{
+}

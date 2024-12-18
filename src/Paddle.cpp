@@ -9,6 +9,10 @@ Paddle::Paddle(int width, int height, float posX, float posY, float speed, sf::C
 	this->speed = speed;
 	this->color = color;
 
+	initialPosX = posX;
+	initialPosY = posY;
+	initialSpeed = speed;
+
 	rectangle = sf::RectangleShape(sf::Vector2f((float)width, (float)height));
 	rectangle.setPosition(posX, posY);
 	rectangle.setFillColor(color);
@@ -42,4 +46,10 @@ void Paddle::MoveRight(int windowWidth)
 void Paddle::OnCollision(Entity* other)
 {
 	// Do nothing
+}
+
+void Paddle::Respawn()
+{
+	rectangle.setPosition(initialPosX, initialPosY);
+	speed = initialSpeed;
 }

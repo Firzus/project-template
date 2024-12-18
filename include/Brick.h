@@ -13,6 +13,7 @@ public:
 	~Brick();
 
 	void OnCollision(Entity* other) override;
+	void Respawn() override;
 
 	// Getters and setters
 	sf::RectangleShape GetRectangle() const { return rectangle; }

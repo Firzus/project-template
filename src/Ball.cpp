@@ -12,6 +12,11 @@ Ball::Ball(float radius, float posX, float posY, float velocityX, float velocity
 	this->velocityX = velocityX;
 	this->velocityY = velocityY;
 
+	initialPosX = posX;
+	initialPosY = posY;
+	initialVelocityX = velocityX;
+	initialVelocityY = velocityY;
+
 	circle = sf::CircleShape(this->radius);
 	circle.setPosition(posX, posY);
 	circle.setFillColor(color);
@@ -139,13 +144,21 @@ void Ball::OnCollision(Entity* other)
 			circle.setPosition(circle.getPosition().x, 0);
 			velocityY = -velocityY;
 		}
-		// Down collision
-		if (circle.getPosition().y + (radius * 2) >= window->GetHeight())
+
+		// Down collision (losing)
+		if (circle.getPosition().y >= window->GetHeight())
 		{
-			circle.setPosition(circle.getPosition().x, window->GetHeight() - (radius * 2));
-			velocityY = -velocityY;
+			lost = true;
 		}
 
 		return;
 	}
+}
+
+void Ball::Respawn()
+{
+	circle.setPosition(initialPosX, initialPosY);
+	velocityX = initialVelocityX;
+	velocityY = initialVelocityY;
+	lost = false;
 }
