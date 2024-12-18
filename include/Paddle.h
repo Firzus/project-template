@@ -14,6 +14,7 @@ public:
 	void MoveLeft();
 	void MoveRight(int windowWidth);
 	void OnCollision(Entity* other) override;
+	void Respawn() override;
 
 	// Getters and setters
 	sf::RectangleShape getRectangle() const { return rectangle; }

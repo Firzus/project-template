@@ -16,6 +16,7 @@ public:
 	~Window();
 
 	void OnCollision(Entity* other) override;
+	void Respawn() override;
 
 	// Getters
 	bool isOpen() const { return renderWindow.isOpen(); }

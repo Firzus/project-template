@@ -16,19 +16,15 @@ Game::Game()
 	scoreText.setPosition(10, 10);
 	scoreText.setString("Score : " + std::to_string(score));
 
-	paddle = new Paddle(200, 30, 400, 550, 5, sf::Color::Blue);
-	ball = new Ball(20, 400, 300, 5, 5, sf::Color::Blue);
+	paddle = new Paddle(175, 30, 400, 550, 5, sf::Color::Blue);
+	ball = new Ball(20, 400, 300, 6, -6, sf::Color::Blue);
 
 	levels[1] = Level({
 		{{0, 0}, true}, {{1, 0}, false}, {{2, 0}, true}, {{3, 0}, true},
 		{{0, 1}, true}, {{1, 1}, true}, {{2, 1}, true}, {{3, 1}, true}
 	});
 
-	for (auto const& brick : levels[currentLevel].GetGrid())
-	{
-		if (!brick.second) continue;
-		bricks.push_back(Brick(100, 30, brick.first.first * 100, brick.first.second * 30, sf::Color::Red));
-	}
+	BuildLevel(1);
 }
 
 Game::~Game()
@@ -41,15 +37,36 @@ void Game::Update(Window* window, float deltaTime)
 	ball->OnCollision(window);
 	ball->OnCollision(paddle);
 
-	for (Brick brick : bricks) {
+	for (Brick& brick : bricks) 
+	{
 		brick.OnCollision(ball);
-		ball->OnCollision(&brick);
+		ball->OnCollision(&brick);	
+	}
+
+	int bricksNumber = bricks.size();
+	bricks.erase(std::remove_if(bricks.begin(), bricks.end(), [](const Brick& brick) { return brick.IsDestroyed(); }), bricks.end());
+
+	if (bricks.size() < bricksNumber)
+	{
+		score += 10;
+		scoreText.setString("Score : " + std::to_string(score));
 	}
 
 	// check si level est complete
 	if (levels[currentLevel].GetGrid().empty())
 	{
 		currentLevel++;
+	}
+
+	// If the ball go out of the screen
+	if (ball->HasLost())
+	{
+		ball->Respawn();
+		paddle->Respawn();
+		BuildLevel(1);
+
+		score = 0;
+		scoreText.setString("Score : " + std::to_string(score));
 	}
 }
 
@@ -115,5 +132,15 @@ void Game::HandleEvents(Window* window)
 				isRightArrowPressed = false;
 			}
 		}
+	}
+}
+
+void Game::BuildLevel(int levelNumber)
+{
+	bricks.clear();
+	for (auto const& brick : levels[levelNumber].GetGrid())
+	{
+		if (!brick.second) continue;
+		bricks.push_back(Brick(100, 30, brick.first.first * 100, brick.first.second * 30, sf::Color::Red));
 	}
 }

@@ -13,6 +13,12 @@ protected:
 	float speed;
 	float velocityX;
 	float velocityY;
+
+	float initialPosX;
+	float initialPosY;
+	float initialSpeed;
+	float initialVelocityX;
+	float initialVelocityY;
 	sf::Color color;
 
 public:
@@ -20,4 +26,5 @@ public:
 	virtual ~Entity() = default;
 
 	virtual void OnCollision(Entity* other) = 0;
+	virtual void Respawn() = 0;
 };
