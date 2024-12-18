@@ -28,3 +28,15 @@ Level& Level::operator=(const Level& other)
 }
 
 Level::~Level() {}
+
+void Level::CheckBricksCollision()
+{
+	// Remove bricks that were hit
+	for (int i = 0; i < bricks.size(); i++)
+	{
+		if (bricks[i].WasHit())
+		{
+			bricks.erase(bricks.begin() + i);
+		}
+	}
+}

@@ -19,10 +19,5 @@ Brick::~Brick() {}
 
 void Brick::OnCollision(Entity* other)
 {
-	Ball* ball = dynamic_cast<Ball*>(other);
-	if (ball)
-	{
-		//delete this;
-		return;
-	}
+	hit = true;
 }

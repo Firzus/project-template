@@ -112,6 +112,8 @@ void Ball::OnCollision(Entity* other)
 				circle.setPosition(circle.getPosition().x, brick->getRectangle().getPosition().y + brick->getRectangle().getSize().y);
 				velocityY = -velocityY;
 			}
+
+			brick->OnCollision(this);
 		}
 
 		return;

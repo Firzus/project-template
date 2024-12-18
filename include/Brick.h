@@ -6,6 +6,7 @@ class Brick : public Entity
 {
 private:
 	sf::RectangleShape rectangle;
+	bool hit = false;
 
 public:
 	Brick(int width, int height, float posX, float posY, sf::Color color);
@@ -15,4 +16,5 @@ public:
 
 	// Getters and setters
 	sf::RectangleShape getRectangle() const { return rectangle; }
+	bool WasHit() const { return hit; }
 };

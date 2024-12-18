@@ -20,6 +20,7 @@ public:
 	Level(const Level& other);
 	Level& operator=(const Level& other);
 	~Level();
+	void CheckBricksCollision();
 
 	// Getters and setters
 	std::vector<Brick> GetBricks() const { return bricks; }

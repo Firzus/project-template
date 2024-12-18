@@ -44,6 +44,8 @@ void Game::Update(Window* window, float deltaTime)
 		ball->OnCollision(&brick);
 	}
 
+	levels[currentLevel].CheckBricksCollision();
+
 	// check si level est complete
 	if (levels[currentLevel].IsCompleted())
 	{
@@ -69,8 +71,12 @@ void Game::FixedUpdate(Window* window)
 
 void Game::Draw(Window* window)
 {
-	for (const auto& pair : levels[1].GetBricks()) {
-		window->GetRenderWindow().draw(pair.getRectangle());
+	for (const auto& pair : levels[1].GetBricks()) 
+	{
+		if (!pair.WasHit())
+		{
+			window->GetRenderWindow().draw(pair.getRectangle());
+		}
 	}
 	window->GetRenderWindow().draw(ball->getCircle());
 	window->GetRenderWindow().draw(paddle->getRectangle());
