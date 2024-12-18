@@ -43,10 +43,7 @@ void Game::Update(Window* window, float deltaTime)
 
 	for (Brick brick : bricks) {
 		brick.OnCollision(ball);
-		ball->OnCollision(&brick);
-	}
-
-	levels[currentLevel].CheckBricksCollision();
+		ball->OnCollision(&brick);	}
 
 	// check si level est complete
 	if (levels[currentLevel].GetGrid().empty())
