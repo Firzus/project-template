@@ -20,14 +20,15 @@ Game::Game()
 	ball = new Ball(20, 400, 300, 5, 5, sf::Color::Blue);
 
 	levels[1] = Level({
-		{0, 1}, {1, 1}, {2, 1}, {3, 1},
-		{4, 1}, {5, 1}, {6, 1}, {7, 1}
-		});
+		{{0, 0}, true}, {{1, 0}, false}, {{2, 0}, true}, {{3, 0}, true},
+		{{0, 1}, true}, {{1, 1}, true}, {{2, 1}, true}, {{3, 1}, true}
+	});
 
-	levels[2] = Level({
-		{0, 1}, {1, 1}, {2, 1}, {3, 1},
-		{4, 1}, {5, 1}, {6, 1}, {7, 1}
-		});
+	for (auto const& brick : levels[currentLevel].GetGrid())
+	{
+		if (!brick.second) continue;
+		bricks.push_back(Brick(100, 30, brick.first.first * 100, brick.first.second * 30, sf::Color::Red));
+	}
 }
 
 Game::~Game()
@@ -40,7 +41,7 @@ void Game::Update(Window* window, float deltaTime)
 	ball->OnCollision(window);
 	ball->OnCollision(paddle);
 
-	for (Brick brick : levels[currentLevel].GetBricks()) {
+	for (Brick brick : bricks) {
 		brick.OnCollision(ball);
 		ball->OnCollision(&brick);
 	}
@@ -48,7 +49,7 @@ void Game::Update(Window* window, float deltaTime)
 	levels[currentLevel].CheckBricksCollision();
 
 	// check si level est complete
-	if (levels[currentLevel].IsCompleted())
+	if (levels[currentLevel].GetGrid().empty())
 	{
 		currentLevel++;
 	}
@@ -71,8 +72,9 @@ void Game::FixedUpdate(Window* window)
 
 void Game::Draw(Window* window)
 {
-	for (const auto& pair : levels[1].GetBricks()) {
-		window->GetRenderWindow().draw(pair.GetRectangle());
+	for (Brick brick : bricks)
+	{
+		window->GetRenderWindow().draw(brick.GetRectangle());
 	}
 	window->GetRenderWindow().draw(ball->getCircle());
 	window->GetRenderWindow().draw(paddle->getRectangle());
@@ -93,10 +95,6 @@ void Game::HandleEvents(Window* window)
 			if (event.key.code == sf::Keyboard::Escape)
 			{
 				window->GetRenderWindow().close();
-			}
-			if (event.key.code == sf::Keyboard::Space)
-			{
-				levels[currentLevel].IsCompleted() ? std::cout << "Level " << currentLevel << " Complete" : std::cout << "Level " << currentLevel << " Incomplete";
 			}
 			if (event.key.code == sf::Keyboard::Left)
 			{

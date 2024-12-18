@@ -8,11 +8,13 @@
 #include "Ball.h"
 #include "Paddle.h"
 #include "Window.h"
+#include "Brick.h"
 
 class Game
 {
 private:
 	FontManager fontManager;
+	std::vector<Brick> bricks;
 	std::map<int, Level> levels;
 	int currentLevel;
 	bool isRunning;
@@ -38,4 +40,6 @@ public:
 
 	// Getters
 	bool IsRunning() const { return isRunning; }
+	int GetScore() const { return score; }
+	int GetLives() const { return lives; }
 };
