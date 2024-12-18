@@ -40,13 +40,9 @@ void Game::Update(Window* window, float deltaTime)
 	ball->OnCollision(window);
 	ball->OnCollision(paddle);
 
-	for (auto& brick : levels[currentLevel].GetBricks())
-	{
-		ball->OnCollision(&brick);
-	}
-
 	for (Brick brick : levels[currentLevel].GetBricks()) {
 		brick.OnCollision(ball);
+		ball->OnCollision(&brick);
 	}
 
 	// check si level est complete
