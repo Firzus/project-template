@@ -1,7 +1,7 @@
 #include <SFML/Graphics.hpp>
 
-#include "Game.h"
 #include "Window.h"
+#include "Game.h"
 
 int main()
 {
@@ -13,25 +13,25 @@ int main()
 
     // Window
     Window* window = new Window("Breakout", 800, 600, 60);
-    Game game;
+    Game* game = new Game();
 
-    while (window->isOpen() && game.IsRunning())
+    while (window->isOpen() && game->IsRunning())
     {
         // Events
-        game.HandleEvents(window);
+        game->HandleEvents(window);
 
         // Update
         float deltaTime = clock.restart().asSeconds();
         timeSinceLastUpdate += deltaTime;
-		game.Update(window, deltaTime);
+		game->Update(window, deltaTime);
         while (timeSinceLastUpdate >= fixedDeltaTime) {
-            game.FixedUpdate(window);
+            game->FixedUpdate(window);
             timeSinceLastUpdate -= fixedDeltaTime;
         }
 
         // Render
         window->GetRenderWindow().clear(sf::Color::White);
-        game.Draw(window);
+        game->Draw(window);
         window->GetRenderWindow().display();
     }
 
