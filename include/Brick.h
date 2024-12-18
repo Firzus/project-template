@@ -6,6 +6,7 @@ class Brick : public Entity
 {
 private:
 	sf::RectangleShape rectangle;
+	bool destroyed;
 
 public:
 	Brick(int width, int height, float posX, float posY, sf::Color color);
@@ -14,5 +15,6 @@ public:
 	void OnCollision(Entity* other) override;
 
 	// Getters and setters
-	sf::RectangleShape getRectangle() const { return rectangle; }
+	sf::RectangleShape GetRectangle() const { return rectangle; }
+	bool IsDestroyed() const { return destroyed; }
 };

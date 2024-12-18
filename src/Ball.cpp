@@ -88,28 +88,28 @@ void Ball::OnCollision(Entity* other)
 	Brick* brick = dynamic_cast<Brick*>(other);
 	if (brick)
 	{
-		if (circle.getGlobalBounds().intersects(brick->getRectangle().getGlobalBounds()))
+		if (circle.getGlobalBounds().intersects(brick->GetRectangle().getGlobalBounds()))
 		{
-			std::string side = checkSideOfCollision(brick->getRectangle());
+			std::string side = checkSideOfCollision(brick->GetRectangle());
 
 			if (side == "left")
 			{
-				circle.setPosition(brick->getRectangle().getPosition().x - (radius * 2), circle.getPosition().y);
+				circle.setPosition(brick->GetRectangle().getPosition().x - (radius * 2), circle.getPosition().y);
 				velocityX = -velocityX;
 			}
 			else if (side == "right")
 			{
-				circle.setPosition(brick->getRectangle().getPosition().x + brick->getRectangle().getSize().x, circle.getPosition().y);
+				circle.setPosition(brick->GetRectangle().getPosition().x + brick->GetRectangle().getSize().x, circle.getPosition().y);
 				velocityX = -velocityX;
 			}
 			else if (side == "top")
 			{
-				circle.setPosition(circle.getPosition().x, brick->getRectangle().getPosition().y - (radius * 2));
+				circle.setPosition(circle.getPosition().x, brick->GetRectangle().getPosition().y - (radius * 2));
 				velocityY = -velocityY;
 			}
 			else if (side == "bottom")
 			{
-				circle.setPosition(circle.getPosition().x, brick->getRectangle().getPosition().y + brick->getRectangle().getSize().y);
+				circle.setPosition(circle.getPosition().x, brick->GetRectangle().getPosition().y + brick->GetRectangle().getSize().y);
 				velocityY = -velocityY;
 			}
 		}

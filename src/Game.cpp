@@ -39,9 +39,14 @@ void Game::Update(Window* window, float deltaTime)
 {
 	ball->OnCollision(window);
 	ball->OnCollision(paddle);
+
 	for (auto& brick : levels[currentLevel].GetBricks())
 	{
 		ball->OnCollision(&brick);
+	}
+
+	for (Brick brick : levels[currentLevel].GetBricks()) {
+		brick.OnCollision(ball);
 	}
 
 	// check si level est complete
@@ -53,7 +58,6 @@ void Game::Update(Window* window, float deltaTime)
 
 void Game::FixedUpdate(Window* window)
 {
-	//std::cout << "FixedUpdate - Delta Time: " << deltaTime << " seconds\n";
 	ball->Move();
 
 	// Inputs
@@ -70,7 +74,7 @@ void Game::FixedUpdate(Window* window)
 void Game::Draw(Window* window)
 {
 	for (const auto& pair : levels[1].GetBricks()) {
-		window->GetRenderWindow().draw(pair.getRectangle());
+		window->GetRenderWindow().draw(pair.GetRectangle());
 	}
 	window->GetRenderWindow().draw(ball->getCircle());
 	window->GetRenderWindow().draw(paddle->getRectangle());
