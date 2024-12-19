@@ -5,7 +5,6 @@ Game::Game()
 	fontManager.LoadFont("resources/fonts/Roboto.ttf");
 
 	score = 0;
-	lives = 3;
 	currentLevel = 1;
 
 	isRunning = true;
@@ -19,24 +18,22 @@ Game::Game()
 	paddle = new Paddle(175, 30, 400, 550, 5, sf::Color::Blue);
 	ball = new Ball(20, 400, 300, 6, -6, sf::Color::Blue);
 
-	//levels[1] = Level({
-	//	{{0, 0}, true}, {{1, 0}, true}, {{2, 0}, true}, {{3, 0}, true},
-	//	{{0, 1}, true}, {{1, 1}, true}, {{2, 1}, true}, {{3, 1}, true}
-	//});
-
 	levels[1] = Level({
-	{{0, 0}, false}, {{1, 0}, false}, {{2, 0}, false}, {{3, 0}, false},
-	{{0, 1}, false}, {{1, 1}, false}, {{2, 1}, true}, {{3, 1}, false}
+		{ {0, 0}, true }, { {1, 0}, true }, { {2, 0}, true }, { {3, 0}, true }, { {4, 0}, true }, { {5, 0}, true }, { {6, 0}, true }, { {7, 0}, true },
+		{ {0, 1}, true }, { {1, 1}, true }, { {2, 1}, true }, { {3, 1}, true }, { {4, 1}, true }, { {5, 1}, true }, { {6, 1}, true }, { {7, 1}, true },
 	});
 
 	levels[2] = Level({
-		{{0, 0}, true}, {{1, 0}, false}, {{2, 0}, true}, {{3, 0}, false},
-		{{0, 1}, false}, {{1, 1}, true}, {{2, 1}, false}, {{3, 1}, true}
+		{ {0, 0}, true }, { {1, 0}, true }, { {2, 0}, true }, { {3, 0}, true }, { {4, 0}, true }, { {5, 0}, true }, { {6, 0}, true }, { {7, 0}, true },
+		{ {0, 1}, true }, { {1, 1}, true }, { {2, 1}, true }, { {3, 1}, true }, { {4, 1}, true }, { {5, 1}, true }, { {6, 1}, true }, { {7, 1}, true },
+		{ {0, 2}, true }, { {1, 2}, true }, { {2, 2}, true }, { {3, 2}, true }, { {4, 2}, true }, { {5, 2}, true }, { {6, 2}, true }, { {7, 2}, true },
 	});
 
 	levels[3] = Level({
-		{{0, 0}, true}, {{1, 0}, true}, {{2, 0}, true}, {{3, 0}, true},
-		{{0, 1}, true}, {{1, 1}, true}, {{2, 1}, true}, {{3, 1}, true}
+		{ {0, 0}, true }, { {1, 0}, true }, { {2, 0}, true }, { {3, 0}, true }, { {4, 0}, true }, { {5, 0}, true }, { {6, 0}, true }, { {7, 0}, true },
+		{ {0, 1}, true }, { {1, 1}, true }, { {2, 1}, true }, { {3, 1}, true }, { {4, 1}, true }, { {5, 1}, true }, { {6, 1}, true }, { {7, 1}, true },
+		{ {0, 2}, true }, { {1, 2}, true }, { {2, 2}, true }, { {3, 2}, true }, { {4, 2}, true }, { {5, 2}, true }, { {6, 2}, true }, { {7, 2}, true },
+		{ {0, 3}, true }, { {1, 3}, true }, { {2, 3}, true }, { {3, 3}, true }, { {4, 3}, true }, { {5, 3}, true }, { {6, 3}, true }, { {7, 3}, true },
 	});
 
 	BuildLevel(currentLevel);
@@ -58,7 +55,7 @@ void Game::Update(Window* window, float deltaTime)
 		ball->OnCollision(&brick);	
 	}
 
-	int bricksNumber = bricks.size();
+	size_t bricksNumber = bricks.size();
 	bricks.erase(std::remove_if(bricks.begin(), bricks.end(), [](const Brick& brick) { return brick.IsDestroyed(); }), bricks.end());
 
 	if (bricks.size() < bricksNumber)
@@ -165,6 +162,6 @@ void Game::BuildLevel(int levelIndex)
 	for (auto const& brick : levels[levelIndex].GetGrid())
 	{
 		if (!brick.second) continue;
-		bricks.push_back(Brick(100, 30, brick.first.first * 100, brick.first.second * 30, sf::Color::Red));
+		bricks.push_back(Brick(100, 30, brick.first.first * (float)100, brick.first.second * (float)30, sf::Color::Red));
 	}
 }

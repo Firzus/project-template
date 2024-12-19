@@ -19,7 +19,6 @@ private:
 	int currentLevel;
 	bool isRunning;
 	int score;
-	int lives;
 
 	Ball* ball = nullptr;
 	Paddle* paddle = nullptr;
@@ -42,5 +41,4 @@ public:
 	// Getters
 	bool IsRunning() const { return isRunning; }
 	int GetScore() const { return score; }
-	int GetLives() const { return lives; }
 };
