@@ -60,29 +60,29 @@ void Ball::OnCollision(Entity* other)
 	// Paddle collision
 	Paddle* paddle = dynamic_cast<Paddle*>(other);
 	if (paddle) {
-		if (circle.getGlobalBounds().intersects(paddle->getRectangle().getGlobalBounds()))
+		if (circle.getGlobalBounds().intersects(paddle->GetRectangle().getGlobalBounds()))
 		{
-			std::string side = checkSideOfCollision(paddle->getRectangle());
+			std::string side = checkSideOfCollision(paddle->GetRectangle());
 
 			if (side == "left")
 			{
-				circle.setPosition(paddle->getRectangle().getPosition().x - (radius * 2), circle.getPosition().y);
-				velocityX = -velocityX;
+				Bounce(paddle, side);
+				//circle.setPosition(paddle->getRectangle().getPosition().x - (radius * 2), circle.getPosition().y);
 			}
 			else if (side == "right")
 			{
-				circle.setPosition(paddle->getRectangle().getPosition().x + paddle->getRectangle().getSize().x, circle.getPosition().y);
-				velocityX = -velocityX;
+				Bounce(paddle, side);
+				//circle.setPosition(paddle->getRectangle().getPosition().x + paddle->getRectangle().getSize().x, circle.getPosition().y);
 			}
 			else if (side == "top")
 			{
-				circle.setPosition(circle.getPosition().x, paddle->getRectangle().getPosition().y - (radius * 2));
-				velocityY = -velocityY;
+				Bounce(paddle, side);
+				//circle.setPosition(circle.getPosition().x, paddle->getRectangle().getPosition().y - (radius * 2));
 			}
 			else if (side == "bottom")
 			{
-				circle.setPosition(circle.getPosition().x, paddle->getRectangle().getPosition().y + paddle->getRectangle().getSize().y);
-				velocityY = -velocityY;
+				Bounce(paddle, side);
+				//circle.setPosition(circle.getPosition().x, paddle->getRectangle().getPosition().y + paddle->getRectangle().getSize().y);
 			}
 		}
 
@@ -99,23 +99,23 @@ void Ball::OnCollision(Entity* other)
 
 			if (side == "left")
 			{
-				circle.setPosition(brick->GetRectangle().getPosition().x - (radius * 2), circle.getPosition().y);
-				velocityX = -velocityX;
+				Bounce(brick, side);
+				//circle.setPosition(brick->GetRectangle().getPosition().x - (radius * 2), circle.getPosition().y);
 			}
 			else if (side == "right")
 			{
-				circle.setPosition(brick->GetRectangle().getPosition().x + brick->GetRectangle().getSize().x, circle.getPosition().y);
-				velocityX = -velocityX;
+				Bounce(brick, side);
+				//circle.setPosition(brick->GetRectangle().getPosition().x + brick->GetRectangle().getSize().x, circle.getPosition().y);
 			}
 			else if (side == "top")
 			{
-				circle.setPosition(circle.getPosition().x, brick->GetRectangle().getPosition().y - (radius * 2));
-				velocityY = -velocityY;
+				Bounce(brick, side);
+				//circle.setPosition(circle.getPosition().x, brick->GetRectangle().getPosition().y - (radius * 2));
 			}
 			else if (side == "bottom")
 			{
-				circle.setPosition(circle.getPosition().x, brick->GetRectangle().getPosition().y + brick->GetRectangle().getSize().y);
-				velocityY = -velocityY;
+				Bounce(brick, side);
+				//circle.setPosition(circle.getPosition().x, brick->GetRectangle().getPosition().y + brick->GetRectangle().getSize().y);
 			}
 
 			brick->OnCollision(this);
@@ -161,4 +161,87 @@ void Ball::Respawn()
 	velocityX = initialVelocityX;
 	velocityY = initialVelocityY;
 	lost = false;
+}
+
+void Ball::Bounce(Entity* entity, std::string side)
+{
+	float normalX = 0.0f, normalY = 0.0f;
+
+	if (side == "left") {
+		normalX = -1.0f;
+	}
+	else if (side == "right") {
+		normalX = 1.0f;
+	}
+	else if (side == "top") {
+		normalY = -1.0f;
+	}
+	else if (side == "bottom") {
+		normalY = 1.0f;
+	}
+
+	// Calculate dot product
+	float dotProduct = velocityX * normalX + velocityY * normalY;
+
+	// Calculate reflection vectors
+	float reflectX = velocityX - 2 * dotProduct * normalX;
+	float reflectY = velocityY - 2 * dotProduct * normalY;
+
+	// Calculate initial speed and new magnitude to normalize reflection vectors
+	float initialSpeed = std::sqrt(velocityX * velocityX + velocityY * velocityY);
+	float magnitude = std::sqrt(reflectX * reflectX + reflectY * reflectY);
+
+	// Calculate new directions with the new values
+	velocityX = (reflectX / magnitude) * initialSpeed;
+	velocityY = (reflectY / magnitude) * initialSpeed;
+
+
+	Paddle* paddle = dynamic_cast<Paddle*>(entity);
+	if (paddle)
+	{
+		if (side == "left") {
+			circle.setPosition(paddle->GetRectangle().getPosition().x - radius * 2, circle.getPosition().y);
+		}
+		else if (side == "right") {
+			circle.setPosition(paddle->GetRectangle().getPosition().x + paddle->GetRectangle().getSize().x, circle.getPosition().y);
+		}
+		else if (side == "top") {
+			circle.setPosition(circle.getPosition().x, paddle->GetRectangle().getPosition().y - radius * 2);
+		}
+		else if (side == "bottom") {
+			circle.setPosition(circle.getPosition().x, paddle->GetRectangle().getPosition().y + paddle->GetRectangle().getSize().y);
+		}
+
+		if (side == "top" || side == "bottom") {
+			velocityX += (circle.getPosition().x + radius - paddle->GetRectangle().getPosition().x + (paddle->GetRectangle().getSize().x / 2)) * 0.005f;
+		}
+		else if (side == "left" || side == "right") {
+			velocityY += (circle.getPosition().y + radius - paddle->GetRectangle().getPosition().y + (paddle->GetRectangle().getSize().y / 2)) * 0.005f;
+		}
+	}
+
+	Brick* brick = dynamic_cast<Brick*>(entity);
+	if (brick)
+	{
+		if (side == "left") {
+			circle.setPosition(brick->GetRectangle().getPosition().x - radius * 2, circle.getPosition().y);
+		}
+		else if (side == "right") {
+			circle.setPosition(brick->GetRectangle().getPosition().x + brick->GetRectangle().getSize().x, circle.getPosition().y);
+		}
+		else if (side == "top") {
+			circle.setPosition(circle.getPosition().x, brick->GetRectangle().getPosition().y - radius * 2);
+		}
+		else if (side == "bottom") {
+			circle.setPosition(circle.getPosition().x, brick->GetRectangle().getPosition().y + brick->GetRectangle().getSize().y);
+		}
+
+		if (side == "top" || side == "bottom") {
+			velocityX += (circle.getPosition().x + radius - brick->GetRectangle().getPosition().x + (brick->GetRectangle().getSize().x / 2)) * 0.005f;
+		}
+		else if (side == "left" || side == "right") {
+			velocityY += (circle.getPosition().y + radius - brick->GetRectangle().getPosition().y + (brick->GetRectangle().getSize().y / 2)) * 0.005f;
+		}
+	}
+
 }

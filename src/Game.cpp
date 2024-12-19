@@ -77,6 +77,8 @@ void Game::Update(Window* window, float deltaTime)
 		}
 
 		currentLevel++;
+		ball->Respawn();
+		paddle->Respawn();
 		BuildLevel(currentLevel);
 	}
 
@@ -85,7 +87,7 @@ void Game::Update(Window* window, float deltaTime)
 	{
 		ball->Respawn();
 		paddle->Respawn();
-		BuildLevel(currentLevel);
+		BuildLevel(1);
 
 		score = 0;
 		scoreText.setString("Score : " + std::to_string(score));
@@ -115,7 +117,7 @@ void Game::Draw(Window* window)
 		window->GetRenderWindow().draw(brick.GetRectangle());
 	}
 	window->GetRenderWindow().draw(ball->getCircle());
-	window->GetRenderWindow().draw(paddle->getRectangle());
+	window->GetRenderWindow().draw(paddle->GetRectangle());
 	window->GetRenderWindow().draw(scoreText);
 }
 

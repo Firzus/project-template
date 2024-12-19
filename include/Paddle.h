@@ -17,6 +17,6 @@ public:
 	void Respawn() override;
 
 	// Getters and setters
-	sf::RectangleShape getRectangle() const { return rectangle; }
+	sf::RectangleShape GetRectangle() const { return rectangle; }
 	void SetSpeed(float newSpeed) { speed = newSpeed; }
 };

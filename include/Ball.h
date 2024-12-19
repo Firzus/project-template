@@ -17,6 +17,7 @@ public:
 	std::string checkSideOfCollision(sf::RectangleShape rect);
 	void OnCollision(Entity* other) override;
 	void Respawn() override;
+	void Bounce(Entity* entity, std::string side);
 
 	// Getters and setters
 	sf::CircleShape getCircle() const { return circle; }
