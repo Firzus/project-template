@@ -64,26 +64,7 @@ void Ball::OnCollision(Entity* other)
 		{
 			std::string side = checkSideOfCollision(paddle->GetRectangle());
 
-			if (side == "left")
-			{
-				Bounce(paddle, side);
-				//circle.setPosition(paddle->getRectangle().getPosition().x - (radius * 2), circle.getPosition().y);
-			}
-			else if (side == "right")
-			{
-				Bounce(paddle, side);
-				//circle.setPosition(paddle->getRectangle().getPosition().x + paddle->getRectangle().getSize().x, circle.getPosition().y);
-			}
-			else if (side == "top")
-			{
-				Bounce(paddle, side);
-				//circle.setPosition(circle.getPosition().x, paddle->getRectangle().getPosition().y - (radius * 2));
-			}
-			else if (side == "bottom")
-			{
-				Bounce(paddle, side);
-				//circle.setPosition(circle.getPosition().x, paddle->getRectangle().getPosition().y + paddle->getRectangle().getSize().y);
-			}
+			Bounce(paddle, side);
 		}
 
 		return;
@@ -97,26 +78,7 @@ void Ball::OnCollision(Entity* other)
 		{
 			std::string side = checkSideOfCollision(brick->GetRectangle());
 
-			if (side == "left")
-			{
-				Bounce(brick, side);
-				//circle.setPosition(brick->GetRectangle().getPosition().x - (radius * 2), circle.getPosition().y);
-			}
-			else if (side == "right")
-			{
-				Bounce(brick, side);
-				//circle.setPosition(brick->GetRectangle().getPosition().x + brick->GetRectangle().getSize().x, circle.getPosition().y);
-			}
-			else if (side == "top")
-			{
-				Bounce(brick, side);
-				//circle.setPosition(circle.getPosition().x, brick->GetRectangle().getPosition().y - (radius * 2));
-			}
-			else if (side == "bottom")
-			{
-				Bounce(brick, side);
-				//circle.setPosition(circle.getPosition().x, brick->GetRectangle().getPosition().y + brick->GetRectangle().getSize().y);
-			}
+			Bounce(brick, side);
 
 			brick->OnCollision(this);
 		}
@@ -224,16 +186,16 @@ void Ball::Bounce(Entity* entity, std::string side)
 	if (brick)
 	{
 		if (side == "left") {
-			circle.setPosition(brick->GetRectangle().getPosition().x - radius * 2, circle.getPosition().y);
+			circle.setPosition(brick->GetRectangle().getPosition().x - (radius * 2) - 2, circle.getPosition().y);
 		}
 		else if (side == "right") {
-			circle.setPosition(brick->GetRectangle().getPosition().x + brick->GetRectangle().getSize().x, circle.getPosition().y);
+			circle.setPosition(brick->GetRectangle().getPosition().x + brick->GetRectangle().getSize().x, circle.getPosition().y + 2);
 		}
 		else if (side == "top") {
-			circle.setPosition(circle.getPosition().x, brick->GetRectangle().getPosition().y - radius * 2);
+			circle.setPosition(circle.getPosition().x, brick->GetRectangle().getPosition().y - (radius * 2) - 2);
 		}
 		else if (side == "bottom") {
-			circle.setPosition(circle.getPosition().x, brick->GetRectangle().getPosition().y + brick->GetRectangle().getSize().y);
+			circle.setPosition(circle.getPosition().x, brick->GetRectangle().getPosition().y + brick->GetRectangle().getSize().y + 2);
 		}
 
 		if (side == "top" || side == "bottom") {
