@@ -6,7 +6,6 @@ Game::Game()
 
 	score = 0;
 	currentLevel = 1;
-
 	isRunning = true;
 
 	scoreText.setFont(fontManager.GetFont());
@@ -15,8 +14,8 @@ Game::Game()
 	scoreText.setPosition(10, 10);
 	scoreText.setString("Score : " + std::to_string(score));
 
-	paddle = new Paddle(175, 30, 400, 550, 5, sf::Color::Blue);
-	ball = new Ball(20, 400, 300, 6, -6, sf::Color::Blue);
+	paddle = new Paddle(175, 30, 400, 550, 5, sf::Color(15, 23, 42));
+	ball = new Ball(20, 400, 300, 6, -6, sf::Color(203, 213, 225));
 
 	levels[1] = Level({
 		{ {0, 0}, true }, { {1, 0}, true }, { {2, 0}, true }, { {3, 0}, true }, { {4, 0}, true }, { {5, 0}, true }, { {6, 0}, true }, { {7, 0}, true },
@@ -159,9 +158,18 @@ void Game::HandleEvents(Window* window)
 void Game::BuildLevel(int levelIndex)
 {
 	bricks.clear();
+
 	for (auto const& brick : levels[levelIndex].GetGrid())
 	{
 		if (!brick.second) continue;
-		bricks.push_back(Brick(100, 30, brick.first.first * (float)100, brick.first.second * (float)30, sf::Color::Red));
+
+		// Coordonnees de la brique
+		int x = brick.first.first;
+		int y = brick.first.second;
+
+		// Determiner la couleur en fonction de la parité des indices x et y
+		sf::Color brickColor = ((x + y) % 2 == 0) ? sf::Color(71, 85, 105) : sf::Color(100, 116, 139);
+
+		bricks.push_back(Brick(100, 30, x * (float)100, y * (float)30, brickColor));
 	}
 }

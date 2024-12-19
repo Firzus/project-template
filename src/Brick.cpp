@@ -18,9 +18,6 @@ Brick::Brick(int width, int height, float posX, float posY, sf::Color color)
 	rectangle = sf::RectangleShape(sf::Vector2f((float)width, (float)height));
 	rectangle.setPosition(posX, posY);
 	rectangle.setFillColor(color);
-
-	rectangle.setOutlineThickness(2);
-	rectangle.setOutlineColor(sf::Color(255, 255, 255));
 }
 
 Brick::~Brick() {}
